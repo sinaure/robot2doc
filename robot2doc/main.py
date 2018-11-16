@@ -39,7 +39,8 @@ def robot2doc(src, doc_fn, doc_main_tit):
     '''
 
     print "Starting.."
-    spec = testspec.TestSpec('ETSI_GS_Skeleton.docx')
+    script_dir=os.path.dirname(os.path.realpath(__file__))
+    spec = testspec.TestSpec(script_dir('ETSI_GS_Skeleton.docx'))
 
     try:
         workspace = TestSuiteBuilder().build(file)
