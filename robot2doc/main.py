@@ -3,17 +3,21 @@
 #  Usage: python main.py <FILE_OR_FOLDER> [OUTPUT_FILENAME [MAIN_TITLE]]
 #
 
-from robot.api import TestSuiteBuilder
 import sys
-import testspec
+import os
+
+from robot.api import TestSuiteBuilder
+
+from testspec import TestSpec, DOC_BASE_SEC, DOC_TC_LEVEL
 from testpurpose import TP
 
 # Configuration
 
 DOC_MAIN_TITLE = 'Annex B (informative): Test Cases'
 DOC_FILENAME = 'test_spec_from_robot.docx'
-FILE=""
-        
+FILE = ""
+BASE_SPEC = 'basespec.docx'
+
 def keyword_to_line(k):
     '''
     Takes a Robot Framework keyword object and returns
@@ -21,13 +25,13 @@ def keyword_to_line(k):
     '''
     return str(k) + " " + " ".join(k.args)
 
-def keywords_to_text(ks):
+def keywords_to_text(kws):
     '''
-    Takes a list of Robot Framework words and returns a multiline text 
+    Takes a list of Robot Framework words and returns a multiline text
     '''
-    return "\n".join(map(keyword_to_line, ks))
+    return "\n".join(map(keyword_to_line, kws))
 
-def robot2doc(src, doc_fn, doc_main_tit):
+def gen_doc(src, doc_fn, doc_main_tit):
     '''
     Converts a Robot test suite to a word document
 
@@ -39,27 +43,36 @@ def robot2doc(src, doc_fn, doc_main_tit):
     '''
 
     print "Starting.."
-    script_dir=os.path.dirname(os.path.realpath(__file__))
-    spec = testspec.TestSpec(script_dir('ETSI_GS_Skeleton.docx'))
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    wd = os.getcwd()
+    
+    # Using the absolute path has caused issues. The quick fix is to
+    # move temporarily to the source directory
+    os.chdir(script_dir)
+    try:
+        spec = TestSpec(BASE_SPEC)
+    #finally:
+    #    os.chdir(cwd)
 
     try:
-        workspace = TestSuiteBuilder().build(file)
+        workspace = TestSuiteBuilder().build(src)
     except:
         print "Please check that first argument is a folder of Robot files or a single file."
         exit(-1)
 
     print "Loaded "+ str(len(workspace.suites)) + " test suites."
-    sec = testspec.DOC_BASE_SEC - 1
+    sec = DOC_BASE_SEC - 1
 
     spec.add_main_heading(doc_main_tit)
     for suite in workspace.suites:
         sec = sec + 1
         subsec = 0
         print "  Generating test suite: " + str(suite)
-        spec.add_sub_heading(str(suite),sec)
+        spec.add_sub_heading(str(suite), sec)
         for i in suite.tests:
+            print "      Generating test: " + str(i)
             subsec = subsec + 1
-            spec.add_heading(str(i), testspec.DOC_TC_LEVEL, sec, subsec)
+            spec.add_heading(str(i), DOC_TC_LEVEL, sec, subsec)
             TP(i.doc).add_to_spec(spec, keywords_to_text(i.keywords))
 
     spec.save(doc_fn)
@@ -74,4 +87,4 @@ if __name__ == "__main__":
     DOC_FILENAME = sys.argv[2] if len(sys.argv) > 2 else DOC_FILENAME
     DOC_MAIN_TITLE = sys.argv[3] if len(sys.argv) > 3 else DOC_MAIN_TITLE
 
-    robot2doc(FILE, DOC_FILENAME, DOC_MAIN_TITLE)
+    gen_doc(FILE, DOC_FILENAME, DOC_MAIN_TITLE)

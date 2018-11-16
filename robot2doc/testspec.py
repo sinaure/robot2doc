@@ -1,5 +1,6 @@
 #!/env/python
 
+import os
 from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT, WD_BREAK_TYPE
@@ -22,7 +23,10 @@ TABLE_STYLE = 'TestTable'
 class TestSpec():
 
     def __init__(self, path=None):
-        self.doc = Document(path)
+        if path:
+	    print "opening doc: "+path
+	print "current dir: "+os.getcwd()
+	self.doc = Document(path)
 
     @staticmethod
     def cell_text_bold(cell):
