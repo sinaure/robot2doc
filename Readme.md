@@ -4,7 +4,9 @@ A simple Docx generator for Robot Framework Test Suites
 
 ## Requirements
 
-    pip install
+    [sudo] pip install --upgrade -r  requirements.txt [--user]
+
+`sudo` or `--user` may be required (but not together!), depending on the local environment (e.g. OS, if using virtualenv, etc.).
 
 ## Usage
 
