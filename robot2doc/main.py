@@ -44,15 +44,15 @@ def gen_doc(src, doc_fn, doc_main_tit):
 
     print "Starting.."
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    wd = os.getcwd()
+    cwd = os.getcwd()
     
     # Using the absolute path has caused issues. The quick fix is to
     # move temporarily to the source directory
     os.chdir(script_dir)
     try:
         spec = TestSpec(BASE_SPEC)
-    #finally:
-    #    os.chdir(cwd)
+    finally:
+        os.chdir(cwd)
 
     try:
         workspace = TestSuiteBuilder().build(src)
