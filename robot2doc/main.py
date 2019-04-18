@@ -63,17 +63,17 @@ def gen_doc(src, doc_fn, doc_main_tit):
     try:
         workspace = TestSuiteBuilder().build(src)
     except:
-        print "Please check that first argument is a folder of Robot files or a single file."
+        print("Please check that first argument is a folder of Robot files or a single file.")
         exit(-1)
 
-    print "Loaded "+ str(len(workspace.suites)) + " test suites."
+    print("Loaded "+ str(len(workspace.suites)) + " test suites.")
     sec = DOC_CLAUSE_LVL_2 - 1
 
     spec.add_main_heading(doc_main_tit)
     for suite in workspace.suites:
         sec = sec + 1
         subsec = DOC_CLAUSE_LVL_4
-        print "  Generating test suite: " + str(suite)
+        print("  Generating test suite: " + str(suite))
         spec.add_sub_heading(str(suite), DOC_CLAUSE_LVL_1, sec, DOC_CLAUSE_LVL_3, subsec)
         for i in suite.tests:
             print("      Generating test: " + str(i))
@@ -89,12 +89,12 @@ def gen_doc(src, doc_fn, doc_main_tit):
 
     print "Saving to: " + doc_fn
     spec.save(doc_fn)
-    print "Finished."
+    print("Finished.")
 
 if __name__ == "__main__":
 
     if len(sys.argv) < 2:
-        print "Usage: robot2doc <robot_file_or_dir> [<out_file> [spec_section_title]]"
+        print("Usage: robot2doc <robot_file_or_dir> [<out_file> [spec_section_title]]")
 
     FILE = sys.argv[1]
     DOC_FILENAME = sys.argv[2] if len(sys.argv) > 2 else DOC_FILENAME
