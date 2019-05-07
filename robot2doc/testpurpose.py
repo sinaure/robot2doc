@@ -7,11 +7,11 @@ class TpField():
     def __init__(self, text):
         split = text.split(":")
         if len(split) > 1:
-            self.key = split[0]
-            self.value = split[1]
+            self.key = split[0].strip()
+            self.value = split[1].strip()
         else:
             self.key = ""
-            self.value = split[0]
+            self.value = split[0].strip()
 
 class TP():
     '''
@@ -22,6 +22,11 @@ class TP():
         t = text.encode('ascii')
         self.lines = t.split("\\n")
         self.tp_fields = map(TpField, self.lines)
+        self.tp_id = None
+
+        for field in self.tp_fields:
+            if field.key == "Test ID":
+                self.tp_id = field.value
         
     def __str__(self):
         return str(self.lines)

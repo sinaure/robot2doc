@@ -8,15 +8,20 @@ import os
 
 from robot.api import TestSuiteBuilder
 
-from testspec import TestSpec, DOC_BASE_SEC, DOC_TC_LEVEL
+from testspec import TestSpec, DOC_TC_LEVEL
 from testpurpose import TP
-
+import config as cfg
 # Configuration
 
-DOC_MAIN_TITLE = 'Annex B (informative): Test Cases'
-DOC_FILENAME = 'test_spec_from_robot.docx'
-FILE = ""
-BASE_SPEC = 'basespec.docx'
+DOC_CLAUSE_LVL_1 = cfg.DOC_CLAUSE_LVL_1
+DOC_CLAUSE_LVL_2 = cfg.DOC_CLAUSE_LVL_2
+DOC_CLAUSE_LVL_3 = cfg.DOC_CLAUSE_LVL_3
+DOC_CLAUSE_LVL_4 = cfg.DOC_CLAUSE_LVL_4
+
+DOC_MAIN_TITLE = cfg.DOC_MAIN_TITLE
+DOC_FILENAME = cfg.DOC_FILENAME
+FILE = cfg.DOC_FILENAME
+BASE_SPEC = cfg.BASE_SPEC
 
 def keyword_to_line(k):
     '''
@@ -42,6 +47,7 @@ def gen_doc(src, doc_fn, doc_main_tit):
     doc_main_tit   top level title for the section in the doc
     '''
 
+    print("### robot2doc version " + cfg.VERSION)
     print "Starting.."
     script_dir = os.path.dirname(os.path.realpath(__file__))
     cwd = os.getcwd()
@@ -61,20 +67,27 @@ def gen_doc(src, doc_fn, doc_main_tit):
         exit(-1)
 
     print "Loaded "+ str(len(workspace.suites)) + " test suites."
-    sec = DOC_BASE_SEC - 1
+    sec = DOC_CLAUSE_LVL_2 - 1
 
     spec.add_main_heading(doc_main_tit)
     for suite in workspace.suites:
         sec = sec + 1
-        subsec = 0
+        subsec = DOC_CLAUSE_LVL_4
         print "  Generating test suite: " + str(suite)
-        spec.add_sub_heading(str(suite), sec)
+        spec.add_sub_heading(str(suite), DOC_CLAUSE_LVL_1, sec, DOC_CLAUSE_LVL_3, subsec)
         for i in suite.tests:
-            print "      Generating test: " + str(i)
-            subsec = subsec + 1
-            spec.add_heading(str(i), DOC_TC_LEVEL, sec, subsec)
-            TP(i.doc).add_to_spec(spec, keywords_to_text(i.keywords))
+            print("      Generating test: " + str(i))
+            tp = TP(i.doc)
+            if tp.tp_id != None:
+                spec.add_heading(str(i), DOC_TC_LEVEL, tp.tp_id)
+                print("              Has TP ID: " + tp.tp_id)
+            else:
+                subsec = subsec + 1
+                print("              Has NO TP ID.")
+                spec.add_heading(str(i), DOC_TC_LEVEL, DOC_CLAUSE_LVL_1, sec, DOC_CLAUSE_LVL_3, subsec)
+            tp.add_to_spec(spec, keywords_to_text(i.keywords))
 
+    print "Saving to: " + doc_fn
     spec.save(doc_fn)
     print "Finished."
 

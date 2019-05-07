@@ -5,15 +5,17 @@ from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT, WD_BREAK_TYPE
 
-ANNEX_LETTER = "B"
-DOC_BASE_SEC = 1
+import config as cfg
 
-ANNEX_TITLE_LEVEL = 1
-DOC_SUITE_LEVEL = 2
-DOC_TC_LEVEL    = 3
+DOC_CLAUSE_LVL_1 = cfg.DOC_CLAUSE_LVL_1
+DOC_CLAUSE_LVL_2 = cfg.DOC_CLAUSE_LVL_2
 
-DOC_TC_FONT_SIZE = 8
-DOC_TC_FONT_NAME = "Courier New"
+ANNEX_TITLE_LEVEL = cfg.ANNEX_TITLE_LEVEL
+DOC_SUITE_LEVEL = cfg.DOC_SUITE_LEVEL
+DOC_TC_LEVEL = cfg.DOC_TC_LEVEL
+
+DOC_TC_FONT_SIZE = cfg.DOC_TC_FONT_SIZE
+DOC_TC_FONT_NAME = cfg.DOC_TC_FONT_NAME
 
 TP_TITLE = 'Test Purpose'
 TC_TITLE = 'Test Case'
@@ -24,9 +26,9 @@ class TestSpec():
 
     def __init__(self, path=None):
         if path:
-	    print "opening doc: "+path
-	print "current dir: "+os.getcwd()
-	self.doc = Document(path)
+            print("opening doc: "+path)
+        print("current dir: "+os.getcwd())
+        self.doc = Document(path)
 
     @staticmethod
     def cell_text_bold(cell):
@@ -42,14 +44,13 @@ class TestSpec():
         cell.paragraphs[0].runs[0].font.size = Pt(DOC_TC_FONT_SIZE)
 
     @staticmethod
-    def mk_ref(sec, subsec=""):
-        if subsec != "": 
-            return ANNEX_LETTER +"."+ str(sec)+"."+str(subsec)
-        return ANNEX_LETTER +"."+ str(sec)
+    def mk_ref(lv1, lv2="", lv3="", lv4="", lv5=""):
+        secs = [str(x) for x in [lv1, lv2, lv3, lv4, lv5] if x != ""]
+        return (".".join(secs))
 
     @staticmethod
-    def mk_heading(txt, sec, subsec=""):
-        return TestSpec.mk_ref(sec, subsec) + " " + txt
+    def mk_heading(txt, sec, subsec1="", subsec2="", subsec3=""):
+        return TestSpec.mk_ref(sec, subsec1, subsec2, subsec3) + " " + txt
 
     @staticmethod
     def mk_tp_hdr(table):
@@ -84,9 +85,9 @@ class TestSpec():
         row_cells[0].text = testbehaviour
         TestSpec.cell_text_mono(row_cells[0])
 
-    def add_heading(self, txt, lvl, sec="1", subsec=""):
-        self.doc.add_heading(TestSpec.mk_heading(txt, sec, subsec), lvl)
-        
+    def add_heading(self, txt, lvl, sec="1", subsec1="", subsec2="", subsec3=""):
+        self.doc.add_heading(TestSpec.mk_heading(txt, sec, subsec1, subsec2, subsec3), lvl)
+
     def save(self, path):
         self.doc.save(path)
 
@@ -94,11 +95,11 @@ class TestSpec():
         self.doc.add_page_break()
         self.doc.add_heading(txt, ANNEX_TITLE_LEVEL)
 
-    def add_sub_heading(self, txt, sec):
+    def add_sub_heading(self, txt, sec, subsec1, subsec2, subsec3):
         '''
         Add a sub heading to the document
         @txt Title of the heading
         @sec Numer of the section of the heading
         '''
-        self.doc.add_heading(TestSpec.mk_heading(txt,sec), DOC_SUITE_LEVEL)
-        
+        self.doc.add_heading(TestSpec.mk_heading(txt, sec, subsec1, subsec2, subsec3), DOC_SUITE_LEVEL)
+  
