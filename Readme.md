@@ -18,6 +18,11 @@ Command line arguments:
 * `OUT_FILENAME` filename for the output (e.g. `my-tests.docx`)
 * `SECTION_TITLE` the title for the section in the doc where the tests are included
 
+Other configurable paramenters may be found in `config.py`, such as:
+
+* ` DOC_CLAUSE_LVL_*`, the starting number for the sections numbering, with `LVL_1` being the number of the toplevel clause.
+
+
 ## How to write the tests
 
 For each test in each test suite, the tool will extract the documentation and parse
@@ -34,6 +39,22 @@ Example:
         ...    Post-conditions: After the test you will be happy.
         Log    Test starts...
         Etc. etc.
+
+### Test ID
+
+If one of the fields in the documentation is called `Test ID`, the string next to it is used as the reference number for the subclause of the document.
+
+## Tests
+
+Few tests for the internals are created in the `robot2doc` folder.
+To execute the tests you need to install the `pytest` module, then in the folder of the test
+run the command:
+
+    $ python -m "pytest"
+
+or to filter only one of the files use `-k`, e.g.:
+
+    $ python -m "pytest" -k testpurpose
 
 ## License
 
