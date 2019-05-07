@@ -60,6 +60,7 @@ def gen_doc(src, doc_fn, doc_main_tit):
     finally:
         os.chdir(cwd)
 
+    print("Loading tests from: " + src)
     try:
         workspace = TestSuiteBuilder().build(src)
     except:

@@ -26,8 +26,8 @@ class TestSpec():
 
     def __init__(self, path=None):
         if path:
-            print("opening doc: "+path)
-        print("current dir: "+os.getcwd())
+            print("Opening doc: "+path)
+        print("Current dir: "+os.getcwd())
         self.doc = Document(path)
 
     @staticmethod
