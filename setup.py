@@ -5,7 +5,7 @@ with open("Readme.md", "r") as fh:
 
 setuptools.setup(
     name="robot2doc",
-    version="0.0.2",
+    version="0.0.3",
     author="ETSI CTI",
     author_email="cti_support@etsi.org",
     description="Generates a Docx document with Robot Tests documentation",
