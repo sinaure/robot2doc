@@ -1,5 +1,7 @@
 #!/env/python
 
+import config
+
 class TpField():
     '''
     Describe a field in a Test Purpose, via its key and value
@@ -19,8 +21,8 @@ class TP():
     with key value pairs, each separated by ":".
     '''
     def __init__(self, text):
-        t = text.encode('ascii')
-        self.lines = t.split("\\n")
+        # t = text.encode('ascii')
+        self.lines = text.split("\\n")
         self.tp_fields = map(TpField, self.lines)
         self.tp_id = None
 
@@ -33,3 +35,5 @@ class TP():
 
     def add_to_spec(self, spec, test):
         spec.add_tp(self.tp_fields, test)
+        if config.GIT_COMMIT != "":
+            spec.add_commit_url(config.GIT_COMMIT)

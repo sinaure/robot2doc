@@ -68,6 +68,9 @@ class TestSpec():
         TestSpec.cell_text_bold(hdr_cells[0])
         TestSpec.cell_text_centered(hdr_cells[0])
 
+    def add_commit_url(self, commit):
+        self.doc.add_paragraph("Note: Robot code can be found at " + commit)
+
     def add_tp(self, fields, testbehaviour):
         table = self.doc.add_table(cols=2, rows=1)
         table.style = TABLE_STYLE
