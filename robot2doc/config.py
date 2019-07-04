@@ -25,8 +25,9 @@ DRY_RUN = False
 # If QUIET is True, output on stdout is minimized
 QUIET = False
 
-# Commit URL that may be added after each table. If the GIT_COMMIT
-# is the empty string, nothing is added
+# Prefix for the commit URL that may be added after each table. If the GIT_COMMIT
+# is the empty string, nothing is added. The prefix is concatenated with the filename of
+# the Robot file. NOTE: if the final slash is not present it will not be included.
 # Example: 
-# GIT_COMMIT = "http://acme.com/my/example/abcde"
-GIT_COMMIT = ""
+# GIT_COMMIT = "http://acme.com/my/example/abcde/"
+GIT_COMMIT_PREFIX = "https://forge.etsi.org/gitlab/nfv/api-tests/raw/XX-commit-XX/SOL00Y/AAA-API/"

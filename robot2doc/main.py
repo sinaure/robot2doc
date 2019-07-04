@@ -54,7 +54,7 @@ def gen_test(suite, this_test, spec, sec, subsec, workspace):
     else:
         subsec = subsec + 1
         spec.add_heading(str(this_test), DOC_TC_LEVEL, DOC_CLAUSE_LVL_1, sec, DOC_CLAUSE_LVL_3, subsec)
-    tp.add_to_spec(spec, keywords_to_text(this_test.keywords))
+    tp.add_to_spec(spec, keywords_to_text(this_test.keywords), str(suite)+".robot")
 
 def gen_doc(src, doc_fn, doc_main_tit):
     '''
@@ -88,6 +88,7 @@ def gen_doc(src, doc_fn, doc_main_tit):
         exit(-1)
 
     not QUIET and print("Loaded "+ str(len(workspace.suites)) + " test suites.")
+    not QUIET and print("Loaded "+ str(len(workspace.tests)) + " tests.")
     sec = DOC_CLAUSE_LVL_2 - 1
 
     spec.add_main_heading(doc_main_tit)
@@ -98,6 +99,14 @@ def gen_doc(src, doc_fn, doc_main_tit):
         print("  Generating test suite: " + str(suite))
         spec.add_sub_heading(str(suite), DOC_CLAUSE_LVL_1, sec, DOC_CLAUSE_LVL_3, subsec)
         for i in suite.tests:
+            gen_test(suite, i, spec, sec, subsec, workspace)
+    
+    if len(workspace.suites) == 0:
+        sec = sec + 1
+        subsec = DOC_CLAUSE_LVL_4
+        suite = str(workspace)
+        spec.add_sub_heading(suite, DOC_CLAUSE_LVL_1, sec, DOC_CLAUSE_LVL_3, subsec)
+        for i in workspace.tests:
             gen_test(suite, i, spec, sec, subsec, workspace)
             
     not QUIET and print("Saving to: " + doc_fn)
