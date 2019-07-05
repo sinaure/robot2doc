@@ -40,6 +40,9 @@ def keywords_to_text(kws):
     return "\n".join(map(keyword_to_line, kws))
 
 def gen_test(suite, this_test, spec, sec, subsec, workspace):
+    '''
+    Generate the Docx part for an individual test
+    '''
     global DRY_RUN
 
     tp = TP(this_test.doc)

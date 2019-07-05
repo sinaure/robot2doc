@@ -21,6 +21,9 @@ Command line arguments:
 Other configurable paramenters may be found in `config.py`, such as:
 
 * ` DOC_CLAUSE_LVL_*`, the starting number for the sections numbering, with `LVL_1` being the number of the toplevel clause.
+* `DRY_RUN`, if True, no output Docx file is created
+* `QUIET`, if True, output on stdout is minimized
+* `GIT_COMMIT_PREFIX`, If not empty, a NOTE is added after each test with this URL concatenated to the name of the Robot file(s) in input
 
 
 ## How to write the tests
