@@ -3,6 +3,12 @@ import setuptools
 with open("Readme.md", "r") as fh:
     long_description = fh.read()
 
+requirements = [
+    'python-docx==0.8.7',
+    'robot==20071211',
+    'robotframework==3.0.4',
+]
+
 setuptools.setup(
     name="robot2doc",
     version="0.0.3",
