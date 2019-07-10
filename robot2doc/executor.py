@@ -3,7 +3,7 @@
 import sys
 import logging
 import datetime
-from robot2doc import generator
+from robot2doc.generator import Generator
 
 LOG = logging.getLogger("Executor")
 
@@ -22,7 +22,10 @@ class Executor():
         self.file = self.kwargs['file'] if 'file' in self.kwargs else None
         
         LOG.info("******Executor before generator")
-        self.generator = generator.main(kwargs)
+        self.generator = Generator(
+                self.output_filename_prefix,
+                self.output_filename,
+            )
         
         if self.directory == None and  self.file != None:
             LOG.info("absolute path file: " + self.file)

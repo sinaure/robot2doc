@@ -141,13 +141,3 @@ class Generator():
         not self.DRY_RUN and spec.save(doc_fn)
         not self.QUIET and print("Finished.")
     
-def main(args):
-        try:
-            LOG.info("****Generator main method")
-            generator = Generator(
-                args['output_filename_prefix'],
-                args['output_filename'],
-            )
-        except Exception as e:
-            LOG.error("%s" % (e.__str__()))
-            sys.exit()
