@@ -13,9 +13,15 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://forge.etsi.org/gitlab/nfv/stf-557/robot2doc",
     packages=setuptools.find_packages(),
+    install_requires=requirements,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: ETSI Software License",
         "Operating System :: OS Independent",
     ],
+    entry_points={
+        'console_scripts': [
+            'robot2doc = robot2doc.cli:main',
+        ],
+    },
 )
