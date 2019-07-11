@@ -3,14 +3,13 @@
 import sys
 import logging
 import datetime
-from robot2doc.generator import Generator
+from robot2doc import generator
 
 LOG = logging.getLogger("Executor")
 
 
 class Executor():
     def __init__(self, **kwargs):
-        super(Executor, self).__init__()
         
         self.kwargs = kwargs
         self.directory = self.kwargs['directory'] if 'directory' in self.kwargs else None
@@ -22,21 +21,23 @@ class Executor():
         self.file = self.kwargs['file'] if 'file' in self.kwargs else None
         
         LOG.info("******Executor before generator")
-        self.generator = Generator(
-                self.output_filename_prefix,
-                self.output_filename,
-            )
         
         if self.directory == None and  self.file != None:
             LOG.info("absolute path file: " + self.file)
-            self.run(self.file, self.output_filename)
+            generator.main(
+                file=self.file, 
+                output=self.output_filename
+                )
         if self.directory != None:
             LOG.info("absolute path directory: " + self.directory)
             for filename in os.listdir(self.directory):
                 if filename.endswith(".robot"): 
                     prefix = self.output_filename_prefix  if self.output_filename_prefix != None else "" 
                     out_fn = prefix + os.path.splitext(filename)[0] + ".docx"
-                    self.run(os.path.join(directory, filename), out_fn)
+                    generator.main(
+                        os.path.join(directory, filename), 
+                        out_fn,
+                        )
                 continue
             if self.exclude != None:
                 LOG.info("exclude file if name contain: " + self.exclude)
@@ -44,11 +45,13 @@ class Executor():
 
 
     def run(self,file,outputFileName,exclude=None):
+        
+        LOG.info("Executor*****  : inside run method")
         if exclude != None:
             if exclude not in file:
-                self.generator.gen_doc(file, outputFileName)  
+                gen.gen_doc(file, outputFileName)  
         else:
-            self.generator.gen_doc(file, outputFileName)
+            gen.gen_doc(file, outputFileName)
  
 
 def main(args):

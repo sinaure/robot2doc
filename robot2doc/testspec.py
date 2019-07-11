@@ -11,11 +11,10 @@ from robot2doc import config as cfg
 
 class TestSpec():
 
-    def __init__(self, path=None):
-        if path:
-            print("Opening doc: "+path)
-        print("Current dir: "+os.getcwd())
-        self.doc = Document(path)
+    def __init__(self):
+        LOG.info("TestSpec constructor****** ")
+        LOG.info("Current dir: ****** "+os.getcwd())
+        self.doc = Document(cfg.BASE_SPEC)
         self.DOC_CLAUSE_LVL_1 = cfg.DOC_CLAUSE_LVL_1
         self.DOC_CLAUSE_LVL_2 = cfg.DOC_CLAUSE_LVL_2
         
