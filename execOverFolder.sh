@@ -16,7 +16,7 @@ if [ "$1" != "" ]; then
 	for file in $DIR/*.robot; do
 		filename=$(basename "$file")
 		if [[ $filename != *"$EXCLUDE"* ]]; then
-			python robot2doc/main.py $file "${filename%.*}.docx" $COMMIT
+			python robot2doc/main.py $file "${filename%.*}.docx" "${filename%.*}" $COMMIT
 		else
 			echo "excluded file: $filename"	
 		fi
