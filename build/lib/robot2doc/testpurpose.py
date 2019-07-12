@@ -34,14 +34,13 @@ class TP():
     def __str__(self):
         return str(self.lines)
 
-    def add_to_spec(self, spec : testspec.TestSpec, testbehaviour: str, robot_file : str, commit_id : str):
+    def add_to_spec(self, spec : testspec.TestSpec, testbehaviour: str, robot_file : str, commit_id=None, sol=None, api=None):
         '''
         Given a Test Spec, executes the addition of the this TP in the document.
         '''
         spec.add_tp(self.tp_fields, testbehaviour)
-        print("adding commit id: "+commit_id)
         if commit_id != None:
-            spec.add_commit_url(commit_id, robot_file)
+            spec.add_commit_url(robot_file, commit_id, sol, api)
         else:    
             if  config.GIT_COMMIT_PREFIX != "":
-                spec.add_commit_url(config.GIT_COMMIT_PREFIX, robot_file)
+                spec.add_commit_url( robot_file, "", "", config.GIT_COMMIT_PREFIX)

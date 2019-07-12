@@ -68,12 +68,12 @@ class TestSpec():
         TestSpec.cell_text_bold(hdr_cells[0])
         TestSpec.cell_text_centered(hdr_cells[0])
 
-    def add_commit_url(self, commit : str, robot_file : str):
+    def add_commit_url(self, robot_file : str, commit, sol, api):
         '''
         Adds a note to the document containing the URL to the location of the
         file, according to the configured URL prefix configured.
         '''
-        commit_string="https://forge.etsi.org/gitlab/nfv/api-tests/raw/"+commit+"/SOL00Y/AAA-API/"+robot_file
+        commit_string="https://forge.etsi.org/gitlab/nfv/api-tests/raw/"+commit+"/"+sol+"/"+api+"/"+robot_file
         self.doc.add_paragraph("Note: Robot code can be found at " + commit_string)
 
     def add_tp(self, fields, testbehaviour):

@@ -39,7 +39,7 @@ def keywords_to_text(kws):
     '''
     return "\n".join(map(keyword_to_line, kws))
 
-def gen_test(suite, this_test, spec, sec, subsec, workspace, commit_id):
+def gen_test(suite, this_test, spec, sec, subsec, workspace, commit_id, sol, api):
     '''
     Generate the Docx part for an individual test
     '''
@@ -57,9 +57,9 @@ def gen_test(suite, this_test, spec, sec, subsec, workspace, commit_id):
     else:
         subsec = subsec + 1
         spec.add_heading(str(this_test), DOC_TC_LEVEL, DOC_CLAUSE_LVL_1, sec, DOC_CLAUSE_LVL_3, subsec)
-    tp.add_to_spec(spec, keywords_to_text(this_test.keywords), str(suite)+".robot", commit_id)
+    tp.add_to_spec(spec, keywords_to_text(this_test.keywords), str(suite)+".robot", commit_id, sol, api)
 
-def gen_doc(src, doc_fn, doc_main_tit, commit_id):
+def gen_doc(src, doc_fn, doc_main_tit, commit_id, sol, api):
     '''
     Converts a Robot test suite to a word document
 
@@ -102,7 +102,7 @@ def gen_doc(src, doc_fn, doc_main_tit, commit_id):
         print("  Generating test suite: " + str(suite))
         spec.add_sub_heading(str(suite), DOC_CLAUSE_LVL_1, sec, DOC_CLAUSE_LVL_3, subsec)
         for i in suite.tests:
-            gen_test(suite, i, spec, sec, subsec, workspace, commit_id)
+            gen_test(suite, i, spec, sec, subsec, workspace, commit_id, sol, api)
     
     if len(workspace.suites) == 0:
         sec = sec + 1
@@ -110,7 +110,7 @@ def gen_doc(src, doc_fn, doc_main_tit, commit_id):
         suite = str(workspace)
         spec.add_sub_heading(suite, DOC_CLAUSE_LVL_1, sec, DOC_CLAUSE_LVL_3, subsec)
         for i in workspace.tests:
-            gen_test(suite, i, spec, sec, subsec, workspace, commit_id)
+            gen_test(suite, i, spec, sec, subsec, workspace, commit_id, sol, api)
             
     not QUIET and print("Saving to: " + doc_fn)
     not DRY_RUN and spec.save(doc_fn)
@@ -126,4 +126,7 @@ if __name__ == "__main__":
     DOC_FILENAME = sys.argv[2] if len(sys.argv) > 2 else DOC_FILENAME
     DOC_MAIN_TITLE = sys.argv[3] if len(sys.argv) > 3 else DOC_MAIN_TITLE
     COMMIT_ID = sys.argv[4] if len(sys.argv) > 4 else None
-    gen_doc(FILE, DOC_FILENAME, DOC_MAIN_TITLE, COMMIT_ID)
+    SOL = sys.argv[5] if len(sys.argv) > 5 else None
+    API = sys.argv[6] if len(sys.argv) > 6 else None
+    print(  sys.argv[1:])
+    gen_doc(FILE, DOC_FILENAME, DOC_MAIN_TITLE, COMMIT_ID, SOL, API)
