@@ -2,3 +2,7 @@
 .pytest_cache/
 *.pyc
 .vscode/
+.project
+.settings/
+.pydevproject
+*.egg-info/
